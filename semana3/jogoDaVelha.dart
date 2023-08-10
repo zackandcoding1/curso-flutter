@@ -128,9 +128,56 @@ class _TelaTabuleiroState extends State<TelaTabuleiro> {
   ];
   bool ehJogador1 = true;
 
-  // Adicionar lógica para verificar ganhador ou empate
+  bool verificaVencedor(String jogador) {
+    // Verificar se formou linha na horizontal
+    for (int i = 0; i < 3; i++) {
+      if (dados[i][0] == jogador &&
+          dados[i][1] == jogador &&
+          dados[i][2] == jogador) {
+        return true;
+      }
+    }
+
+    // Verificar se formou linha na vertical
+    for (int i = 0; i < 3; i++) {
+      if (dados[0][i] == jogador &&
+          dados[1][i] == jogador &&
+          dados[2][i] == jogador) {
+        return true;
+      }
+    }
+
+    // Verificar se formou linha nas diagonais
+    if (dados[0][0] == jogador &&
+        dados[1][1] == jogador &&
+        dados[2][2] == jogador) {
+      return true;
+    }
+    if (dados[0][2] == jogador &&
+        dados[1][1] == jogador &&
+        dados[2][0] == jogador) {
+      return true;
+    }
+    return false;
+  }
+
   bool ehFimDeJogo() {
-    return dados.every((linha) => linha.every((peca) => peca != ''));
+    // Caso todos os espaços sejam preenchidos
+    // e ninguém vencer, contabiliza empate
+    if (dados.every((linha) => linha.every((peca) => peca != ''))) {
+      return true;
+    }
+
+    // Jogador 1 venceu
+    if (verificaVencedor('X')) {
+      return true;
+    }
+
+    // Jogador 2 venceu
+    if (verificaVencedor('O')) {
+      return true;
+    }
+    return false;
   }
 
   @override
